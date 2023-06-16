@@ -1,6 +1,5 @@
 def JENKINS_WORKER_LABEL = null
-def NODE = 'greencloudcomputing/nodejs14'
-def GIT_REPO = 'https://github.com/sandeep7788/node_jenkins.git'
+def GIT_REPO = 'stash.s-mxs.net:7999/MISOLCONC/bot-test.git'
 def GITLAB_REPO = 'stash.s-mxs.net:7999/cs-misolalfred/misolalfred-chatbot-test-application.git'
 def GITLAB_REPO_O = 'stash.s-mxs.net:7999/cs-misolalfred/misolalfred-chatbot-test-origin.git'
 def GIT_BRANCH = 'master'
@@ -20,7 +19,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                node(NODE) {
+                node {
                     sh 'rm -Rf prepare'
 //                    deleteDir();
                     git branch: GIT_BRANCH, credentialsId: 'CHOPSUEY_JENKINS_SSH', url: "ssh://git@${GIT_REPO}"
@@ -30,7 +29,7 @@ pipeline {
 
         stage('Upgrade dependencies') {
             steps {
-                node(NODE) {
+                node {
                     sh 'npm upgrade'
                     sh 'git add package*'
                     sh "git config user.email \"${GIT_EMAIL}\""
@@ -42,7 +41,7 @@ pipeline {
 
         stage('Last commit check') {
             steps {
-                node(NODE) {
+                node {
                     script {
                         def lastCommit = sh(script: 'git log -1', returnStdout: true)
                         noActualChanges = lastCommit.contains('Upgrade to ')
@@ -62,7 +61,7 @@ pipeline {
                 }
             }
             steps {
-                node(NODE) {
+                node {
                     sh 'npm run lint'
                 }
             }
@@ -89,7 +88,7 @@ pipeline {
                 }
             }
             steps {
-                node(NODE) {
+                node {
                     sh "git config user.email \"${GIT_EMAIL}\""
                     sh "git config user.name \"${GIT_USER}\""
                     sh 'npm version patch -m "Upgrade to %s"'
@@ -108,7 +107,7 @@ pipeline {
             }
 
             steps {
-                node(NODE) {
+                node {
                     sh 'mkdir -p prepare'
                     dir('prepare') {
                         git branch: GIT_BRANCH, credentialsId: 'CHOPSUEY_JENKINS_SSH', url: "ssh://git@${GITLAB_REPO}"
@@ -194,11 +193,3 @@ pipeline {
 def getVersions(versions) {
     return versions.findAll({ it.contains('cs-version') }).collect({ it.split('cs-version/v')[1] })
 }
-
-
-
-
-
-
-
-
