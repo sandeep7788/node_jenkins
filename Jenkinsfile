@@ -19,10 +19,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-
                     sh 'rm -Rf prepare'
-//                    deleteDir();
-                    git branch: GIT_BRANCH, credentialsId: 'CHOPSUEY_JENKINS_SSH', url: "ssh://git@${GIT_REPO}"
+                    git branch: GIT_BRANCH, credentialsId: 'CHOPSUEY_JENKINS_SSH', url: "${GIT_REPO}"
                 }
             }
 
