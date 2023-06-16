@@ -1,5 +1,5 @@
 def JENKINS_WORKER_LABEL = null
-def NODE = 'nodejs14'
+def NODE = 'node'
 def GIT_REPO = 'https://github.com/sandeep7788/node_jenkins.git'
 def GITLAB_REPO = 'stash.s-mxs.net:7999/cs-misolalfred/misolalfred-chatbot-test-application.git'
 def GITLAB_REPO_O = 'stash.s-mxs.net:7999/cs-misolalfred/misolalfred-chatbot-test-origin.git'
