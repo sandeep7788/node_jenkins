@@ -11,6 +11,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                git 'https://github.com/sandeep7788/node_jenkins.git'
                 sh 'npm install'
             }
         }
