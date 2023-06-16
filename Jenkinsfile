@@ -19,29 +19,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                node {
+
                     sh 'rm -Rf prepare'
 //                    deleteDir();
                     git branch: GIT_BRANCH, credentialsId: 'CHOPSUEY_JENKINS_SSH', url: "ssh://git@${GIT_REPO}"
                 }
             }
-        }
+
 
         stage('Upgrade dependencies') {
             steps {
-                node {
+
                     sh 'npm upgrade'
                     sh 'git add package*'
                     sh "git config user.email \"${GIT_EMAIL}\""
                     sh "git config user.name \"${GIT_USER}\""
                     sh script: 'git commit -m "upgraded dependencies"', returnStatus: true
-                }
+
             }
         }
 
         stage('Last commit check') {
             steps {
-                node {
+
                     script {
                         def lastCommit = sh(script: 'git log -1', returnStdout: true)
                         noActualChanges = lastCommit.contains('Upgrade to ')
@@ -50,7 +50,7 @@ pipeline {
                             error('No actual changes, skipping build.')
                         }
                     }
-                }
+                
             }
         }
 
@@ -61,9 +61,9 @@ pipeline {
                 }
             }
             steps {
-                node {
+
                     sh 'npm run lint'
-                }
+                
             }
         }
 
@@ -74,10 +74,10 @@ pipeline {
                 }
             }
             steps {
-                node(NODE) {
+
                     sh 'npm run build'
                     sh 'npm ci --production'
-                }
+                
             }
         }
 
@@ -88,13 +88,13 @@ pipeline {
                 }
             }
             steps {
-                node {
+      
                     sh "git config user.email \"${GIT_EMAIL}\""
                     sh "git config user.name \"${GIT_USER}\""
                     sh 'npm version patch -m "Upgrade to %s"'
                     withCredentials([sshUserPrivateKey(credentialsId: 'CHOPSUEY_JENKINS_SSH', keyFileVariable: 'KEY_FILE')]) {
                          sh("GIT_SSH_COMMAND='ssh -i ${KEY_FILE}' git push ssh://git@${GIT_REPO} ${GIT_BRANCH} --tags")
-                    }
+                    
                 }
             }
         }
@@ -107,7 +107,7 @@ pipeline {
             }
 
             steps {
-                node {
+        
                     sh 'mkdir -p prepare'
                     dir('prepare') {
                         git branch: GIT_BRANCH, credentialsId: 'CHOPSUEY_JENKINS_SSH', url: "ssh://git@${GITLAB_REPO}"
@@ -128,7 +128,7 @@ pipeline {
                             }
                         }
                     }
-                }
+                
             }
         }
         stage('Image') {
