@@ -4,7 +4,7 @@ def GITLAB_REPO = 'stash.s-mxs.net:7999/cs-misolalfred/misolalfred-chatbot-test-
 def GITLAB_REPO_O = 'stash.s-mxs.net:7999/cs-misolalfred/misolalfred-chatbot-test-origin.git'
 def GIT_BRANCH = 'master'
 def GIT_USER = 'Milan Heimschild'
-def GIT_EMAIL = 'milan.heimschild@extern.s-itsolutions.at'
+def GIT_EMAIL = 'milan..at'
 def noActualChanges = false;
 
 pipeline {
